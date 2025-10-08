@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anna Sounds - Player de Música</title>
+    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Partículas de fundo animadas -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Ondas decorativas no topo -->
+    <div class="wave-container">
+        <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+        </svg>
+    </div>
+
+    <header>
+        <button id="menuToggle" class="hamburger" aria-label="Abrir menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1><i class="fas fa-music"></i> Anna Sounds</h1>
+        <div class="header-decorations">
+            <i class="fas fa-compact-disc spinning-disc"></i>
+        </div>
+    </header>
+
+    <!-- Menu sanduíche -->
+    <nav id="sideMenu" class="side-menu">
+        <button id="closeMenu" class="close-btn" aria-label="Fechar menu">&times;</button>
+        <div class="menu-header">
+            <i class="fas fa-sliders-h"></i>
+            <h2>Configurações</h2>
+        </div>
+        <div class="menu-section">
+            <label for="serverUrl">
+                <i class="fas fa-server"></i> Servidor API:
+            </label>
+            <input
+                id="serverUrl"
+                type="url"
+                inputmode="url"
+                placeholder="URL do servidor Flask (ex.: http://SEU-IP)"
+                autocomplete="off"
+                spellcheck="false"
+            />
+            <button id="connectBtn" type="button">
+                <i class="fas fa-plug"></i> Conectar
+            </button>
+        </div>
+        <div class="menu-section">
+            <label for="volumeRange">
+                <i class="fas fa-volume-up"></i> Volume:
+            </label>
+            <div class="volume-display">
+                <span id="volumeValue">100%</span>
+            </div>
+            <input id="volumeRange" type="range" min="0" max="1" step="0.01" value="1" />
+        </div>
+        <div class="menu-section">
+            <label>
+                <i class="fas fa-palette"></i> Modo:
+            </label>
+            <button id="toggleTheme" class="theme-toggle">
+                <i class="fas fa-moon"></i>
+                <span>Modo Escuro</span>
+            </button>
+        </div>
+        <div class="menu-footer">
+            <p><i class="fas fa-heart"></i> Feito com amor</p>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Configuração inicial -->
+        <div id="initialConfig" class="initial-config">
+            <div class="config-icon">
+                <i class="fas fa-headphones-alt"></i>
+            </div>
+            <h2>Bem-vindo ao Anna Sounds</h2>
+            <p>Para começar a usar o player de música, configure a URL do servidor Flask que contém suas músicas.</p>
+            <div class="config-form">
+                <div class="input-group">
+                    <i class="fas fa-link"></i>
+                    <input
+                        id="initialServerUrl"
+                        type="url"
+                        placeholder="URL do servidor Flask (ex.: http://192.168.1.100:5000)"
+                        autocomplete="off"
+                        spellcheck="false"
+                    />
+                </div>
+                <button id="initialConnectBtn" type="button">
+                    <i class="fas fa-rocket"></i> Conectar
+                </button>
+            </div>
+            <div class="demo-section">
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+                <p><a href="#" id="demoLink"><i class="fas fa-play-circle"></i> Experimente a versão de demonstração</a> com músicas de exemplo.</p>
+            </div>
+        </div>
+
+        <!-- Player customizado -->
+        <div class="player" style="display: none;">
+            <div class="player-background"></div>
+            <div class="cover">
+                <div class="vinyl-container">
+                    <div class="vinyl">
+                        <div class="vinyl-center"></div>
+                    </div>
+                    <img id="coverImage" src="/img/Design sem nome.png" alt="Capa do Álbum">
+                </div>
+                <div class="equalizer">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+            <div class="info">
+                <div id="nowPlaying" class="now-playing-badge">
+                    <span class="pulse-dot"></span>
+                    TOCANDO AGORA
+                </div>
+                <div id="songTitle" class="song-title">Nome da Música</div>
+                <div id="songArtist" class="song-artist">Artista</div>
+                <div class="controls">
+                    <button id="prevBtn" title="Música anterior" class="control-btn">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button id="rewindBtn" title="Retroceder 10s" class="control-btn">
+                        <i class="fas fa-backward"></i>
+                    </button>
+                    <button id="playPauseBtn" class="control-btn play-btn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button id="forwardBtn" title="Avançar 10s" class="control-btn">
+                        <i class="fas fa-forward"></i>
+                    </button>
+                    <button id="nextBtn" title="Próxima música" class="control-btn">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                </div>
+                <div class="progress-container">
+                    <span id="currentTime">00:00</span>
+                    <div class="progress-wrapper">
+                        <input id="progressBar" type="range" min="0" max="100" value="0" />
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span id="totalTime">00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listas -->
+        <section id="songSection" style="display: none;">
+            <div class="section-header">
+                <i class="fas fa-music"></i>
+                <h2>Músicas Disponíveis</h2>
+            </div>
+            <ul id="songList"></ul>
+        </section>
+        <section id="historySection" style="display: none;">
+            <div class="section-header">
+                <i class="fas fa-history"></i>
+                <h2>Histórico</h2>
+            </div>
+            <button id="btnClearHistory">
+                <i class="fas fa-trash-alt"></i> Apagar Histórico
+            </button>
+            <ul id="historyList"></ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div id="status" aria-live="polite">
+                <i class="fas fa-circle status-indicator"></i>
+                Conecte-se a um servidor para começar
+            </div>
+        </div>
+    </footer>
+
+    <audio id="audio" preload="none"></audio>
+    <script src="app.js"></script>
+</body>
+</html>
